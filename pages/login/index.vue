@@ -39,6 +39,7 @@ export default {
 
 
   methods: {
+    // 로그인 처리
     login() {
       if (_.trim(this.id) == "") {
         alert("아이디를 입력해주세요.");
