@@ -287,8 +287,57 @@ textarea:focus {
   margin-top: 30px;
 }
 
+/* bottom sheet:: emoji */
 
+.bottom-sheet-emoji {
+  position: relative;
+  height: calc(45vh - 30px);
+  overflow-y: scroll;
+}
 
+.bottom-sheet-emoji .emoji-option {
+  position: fixed;
+  overflow-x: scroll;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background-color: white;
+  border-radius: 12px 12px 0 0;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.bottom-sheet-emoji .emoji-option::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.bottom-sheet-emoji .tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  padding-bottom: 12px;
+  padding: 0 16px;
+  background-color: white;
+  position: absolute;
+  overflow-x: auto;
+}
+.bottom-sheet-emoji .tab-option {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  margin: 0 4px;
+}
+.bottom-sheet-emoji .tab-option.active {
+  background-color: #f2f1f5;
+}
+
+.bottom-sheet-emoji .tab-content {
+  margin: 0 16px;
+  padding-top: 48px;
+  padding-bottom: 20px;
+}
+.bottom-sheet-emoji .grid-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
 
 
 
