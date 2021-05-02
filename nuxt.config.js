@@ -2,7 +2,7 @@ import webpack from "webpack";
 
 const config = {
   ssr: true,
-  
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'emoticon_diary',
@@ -21,7 +21,8 @@ const config = {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '~assets/css/reset.css'
+    '~assets/css/reset.css',
+    '~assets/css/main.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -66,7 +67,7 @@ const config = {
       }),
     ],
 
-    extend(config, ctx) {},
+    extend(config, ctx) { },
   }
 };
 
