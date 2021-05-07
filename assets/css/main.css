@@ -29,7 +29,7 @@ img {
   height: 430px;
   margin: 0 20px 16px;
   position: relative;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "Noto Sans KR", SF UI Display, sans-serif;
 }
 
 .card-side {
@@ -287,6 +287,7 @@ textarea:focus {
   margin-top: 30px;
 }
 
+
 /* bottom sheet:: emoji */
 
 .bottom-sheet-emoji {
@@ -294,7 +295,6 @@ textarea:focus {
   height: calc(45vh - 30px);
   overflow-y: scroll;
 }
-
 .bottom-sheet-emoji .emoji-option {
   position: fixed;
   overflow-x: scroll;
@@ -309,7 +309,6 @@ textarea:focus {
 .bottom-sheet-emoji .emoji-option::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
-
 .bottom-sheet-emoji .tabs {
   display: flex;
   flex-wrap: nowrap;
@@ -328,7 +327,6 @@ textarea:focus {
 .bottom-sheet-emoji .tab-option.active {
   background-color: #f2f1f5;
 }
-
 .bottom-sheet-emoji .tab-content {
   margin: 0 16px;
   padding-top: 48px;
@@ -340,10 +338,131 @@ textarea:focus {
 }
 
 
+/* bottom sheet:: setting */
 
+.bottom-sheet-setting {
+  height: calc(45vh - 30px);
+  overflow-y: scroll;
+  font-family: "Noto Sans KR", SF UI Display, sans-serif;
+}
+.setting-section {
+  width: 300px;
+  margin: 0 auto;
+}
+.account-section {
+  margin: 32px 0;
+}
+.account-section h1 {
+  font-weight: 800;
+  font-size: 24px;
+  font-family: GothamPro, SF UI Display, sans-serif;
+}
+.btn-feedback {
+  width: 300px;
+  height: 48px;
+  background: #000124;
+  border-radius: 16px;
+  color: white;
+  font-size: 14px;
+  line-height: 20px;
+}
+.btn-logout {
+  margin-top: 16px;
+  width: 300px;
+  height: 48px;
+  background: #fff;
+  border-radius: 16px;
+  color: #222;
+  font-size: 14px;
+  border: 1px solid #000124;
+  line-height: 20px;
+}
+.version {
+  width: 300px;
+  margin: 16px 0;
+  color: rgba(34, 34, 34, 0.6);
+  font-size: 14px;
+  text-align: center;
+  line-height: 20px;
+  background-color: transparent;
+}
+
+
+/* bottom sheet:: calendar */
+.bottom-sheet-calendar {
+  height: calc(65vh - 30px);
+  overflow-y: scroll;
+  font-family: "Noto Sans KR", SF UI Display, sans-serif;
+}
+#single-date-picker {
+  margin: 0 20px;
+}
+.single-date-picker__today {
+  border-radius: 16px;
+  background: rgba(91, 96, 233, 0.2);
+  font-weight: 800;
+  color: #5b60e9;
+}
+.single-date-picker__selected {
+  border-radius: 16px;
+  background-color: #5b60e9;
+  font-weight: 800;
+  color: white;
+}
+.single-date-picker__calendar-month-header {
+  display: flex;
+  justify-content: space-between;
+}
+.single-date-picker__year {
+  margin: 18px 0;
+  font-size: 20px;
+}
+.single-date-picker__year strong {
+  font-family: GothamPro, SF UI Display, sans-serif;
+  font-weight: 800;
+}
+.single-date-picker__arrow {
+  width: 24px;
+  margin: 18px 0;
+}
+.single-date-picker__calendar-month {
+  width: 100%;
+}
+.single-date-picker__calendar-week-header {
+  line-height: 38px;
+  color: #888888;
+  font-weight: 800;
+  font-size: 16px;
+  text-align: center;
+}
+.single-date-picker__date {
+  font-size: 16px;
+  line-height: 38px;
+  width: 38px;
+  margin: 6px auto;
+  text-align: center;
+  box-sizing: border-box;
+  cursor: default;
+  color: #222;
+}
+.single-date-event {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #5b60e9;
+  margin: 0 auto;
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  left: 0;
+}
+td {
+  position: relative;
+}
 
 
 /* login */
+
 .login-container {
   height: 100vh;
   display: flex;
@@ -353,9 +472,8 @@ textarea:focus {
   background-color: #fff;
   background-repeat: no-repeat;
   background-size: contain;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "Noto Sans KR", SF UI Display, sans-serif;
 }
-
 .login-contents form {
   display: flex;
   flex-direction: column;
@@ -365,7 +483,6 @@ textarea:focus {
   object-fit: cover;
   margin-bottom: 32px;
 }
-
 .input-section {
   border-radius: 16px;
   background-color: #f2f2f2;
@@ -467,12 +584,14 @@ input:invalid {
   line-height: 20px;
 }
 
+
 /* signin */
+
 .signin-container {
   height: 100vh;
   background-color: #fff;
   position: relative;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "Noto Sans KR", SF UI Display, sans-serif;
   word-wrap: break-word;
   word-break: keep-all;    
 }
@@ -487,7 +606,6 @@ input:invalid {
   width: 24px;
   height: 24px;
 }
-
 .signin-contents form {
   width: 300px;
   margin: 0 auto;
@@ -512,8 +630,6 @@ input:invalid {
   color: #222222;
   line-height: 24px;
 }
-
-
 select {
   border-radius: 16px;
   background-color: #f2f2f2;
@@ -533,11 +649,9 @@ select {
   -moz-appearance: none; /* 화살표 없애기 for firefox*/
   appearance: none; /* 화살표 없애기 공통*/
 }
-
 select:focus {
   outline: none;
 }
-
 select::-ms-expand {
   display: none;
 }
@@ -553,13 +667,11 @@ select::-ms-expand {
 .gender-section input {
   display: none;
 }
-
 .gender-section input:checked + label {
   background-color: #000124;
   border-radius: 16px;
   color: #fff;
 }
-
 .gender-section label {
   display: inline-block;
   text-align: center;
@@ -571,7 +683,6 @@ select::-ms-expand {
   color: #222222;
   line-height: 20px;
 }
-
 .btn-completed {
   position: fixed;
   z-index: 1000;
@@ -587,4 +698,32 @@ select::-ms-expand {
   text-align: center;
   color: white;
   line-height: 20px;
+}
+
+
+/* feedback */
+
+.feedback-container {
+  height: 100vh;
+  background-color: #fff;
+  position: relative;
+  font-family: "Noto Sans KR", SF UI Display, sans-serif;
+}
+.feedback-container .input-section {
+  border-radius: 16px;
+  background-color: #f2f2f2;
+  width: 300px;
+  margin-bottom: 16px;
+}
+.feedback-container .input-section textarea {
+  background-color: transparent;
+  border-width: 0;
+  box-sizing: border-box;
+  width: 300px;
+  margin-top: 0;
+  padding: 20px;
+  font-size: 14px;
+  color: #222222;
+  line-height: 20px;
+  caret-color: #5b60e9;
 }
