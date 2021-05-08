@@ -1,57 +1,42 @@
 <template>
   <div id="app">
     <div class="list-container">
-      <div class="card">
-        <div :class="{ active: isActive }" class="card-side card-side-front">
+      <div class="card" v-for="(diary, diaryIdx) in diaryList" :key="diaryIdx">
+        <div :class="`card-side card-side-front${diary.active ? ' active' : ''}`">
           <div class="emoji-container">
             <ul class="emoji-group">
               <li
                 class="emoji-item default"
-                v-for="emojiItem in emojiItems"
-                :key="emojiItem"
-                @click="openEmoji(emojiItem)"
-                :class="{
-                  selected:
-                    selectedItem === emojiItem &&
-                    state === 'open' &&
-                    bottomSheetType === 'emoji',
-                  default: selectedItem === null,
-                }"
+                v-for="(emoticon, emoticonIdx) in diary.emoticonList"
+                :key="emoticonIdx"
               >
-                <img :src="emojiItem" />
+                <img :src="`/images/emoticon/${emoticon.path != '' ? emoticon.path + '/' + emoticon.fileNm : 'default/no_image.png'}`" />
               </li>
             </ul>
           </div>
           <div class="card-info-bottom">
             <div class="info-date">
-              <div class="info-date-month">April</div>
-              <div class="info-date-day">25</div>
+              <div class="info-date-month">{{ $moment(diary.date).month() | getEnMonth }}</div>
+              <div class="info-date-day">{{ $moment(diary.date).date() }}</div>
             </div>
             <ul class="info-options">
               <li class="option-item">
                 <img src="~/assets/images/ico_share.png" />
               </li>
-              <li
-                @click="
-                  {
-                    onWriting(), close();
-                  }
-                "
-                class="option-item"
-              >
+              <li class="option-item" @click="diary.active = !diary.active">
                 <img src="~/assets/images/ico_msg.png" />
               </li>
             </ul>
           </div>
         </div>
-        <div :class="{ active: isActive }" class="card-side card-side-back">
-          <div @click="endWriting" class="card-close">
+        <div :class="`card-side card-side-back${diary.active ? ' active' : ''}`">
+          <div class="card-close" @click="diary.active = false">
             <img src="~/assets/images/ico_close.png" />
           </div>
           <div class="text-section">
             <div class="info-date">
-              <div class="info-date-month">April</div>
-              <div class="info-date-day">25</div>
+              <div class="info-date-month">{{ $moment(diary.date).month() | getEnMonth }}</div>
+              <div class="info-date-day">{{ $moment(diary.date).date() }}</div>
             </div>
             <textarea
               rows="5"
@@ -61,12 +46,12 @@
         </div>
       </div>
     </div>
-    <button v-if="isActive" class="btn-save">저장하기</button>
+    <button v-if="false" class="btn-save">저장하기</button>
     <div class="bottom-nav">
-      <div @click="openCalendar" class="btn-bottom-option">
+      <div class="btn-bottom-option">
         <img src="~/assets/images/ico_calendar.png" />
       </div>
-      <div class="btn-today">Today</div>
+      <div class="btn-today" @click="today()">Today</div>
       <div class="btn-bottom-option">
         <img src="~/assets/images/ico_setting.png" />
       </div>
@@ -99,7 +84,172 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      diaryList: [
+        { 
+          active: false,
+          date: "20200508",
+          emoticonList: [
+            {
+              path: "default",
+              fileNm: "emoticon_01.png"
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: "default",
+              fileNm: "emoticon_03.png"
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+          ],
+          cont: ""
+        },
+        {
+          active: false,
+          date: "20200507",
+          emoticonList: [
+            {
+              path: "default",
+              fileNm: "emoticon_01.png"
+            },
+            {
+              path: "default",
+              fileNm: "emoticon_03.png"
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+          ],
+          cont: ""
+        },
+        {
+          active: false,
+          date: "20200506",
+          emoticonList: [
+            {
+              path: "default",
+              fileNm: "emoticon_01.png"
+            },
+            {
+              path: "default",
+              fileNm: "emoticon_03.png"
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+            {
+              path: '',
+              fileNm: ''
+            },
+          ],
+          cont: ""
+        },
+      ]
+
+    }
+
+  },
+
+  methods: {
+    today() {
+      $("html, body").animate({ scrollTop: 0 }, 500);
+    }
+
+  },
+
+  filters: {
+    getEnMonth(idx) {
+      let enStr = "";
+      if (idx == 0) enStr = "January"
+      else if (idx == 1) enStr = "February"
+      else if (idx == 2) enStr = "March"
+      else if (idx == 3) enStr = "April"
+      else if (idx == 4) enStr = "May"
+      else if (idx == 5) enStr = "June"
+      else if (idx == 6) enStr = "July"
+      else if (idx == 7) enStr = "August"
+      else if (idx == 8) enStr = "September"
+      else if (idx == 9) enStr = "October"
+      else if (idx == 10) enStr = "November"
+      else if (idx == 11) enStr = "December"
+
+      return enStr;
+    }
+  }  
+};
 </script>
 
 <style>
