@@ -9,6 +9,7 @@
                 class="emoji-item default"
                 v-for="(emoticon, emoticonIdx) in diary.emoticonList"
                 :key="emoticonIdx"
+                @click="openEmoji()"
               >
                 <img :src="`/images/emoticon/${emoticon.path != '' ? emoticon.path + '/' + emoticon.fileNm : 'default/no_image.png'}`" />
               </li>
@@ -56,18 +57,28 @@
         <img src="~/assets/images/ico_setting.png" />
       </div>
     </div>
-    <!-- <div class="wrapper" :data-open="state === 'open' ? 1 : 0">
+    <div class="wrapper" :data-open="state === 'open' ? 1 : 0">
       <div
         ref="card"
         class="bottomcard"
         :data-state="isMove ? 'move' : state"
         :style="{ top: `${isMove ? y : calcY()}px` }"
       >
-        <div class="pan-area" ref="pan">
+        <div 
+          class="pan-area" 
+          ref="pan"
+          v-hammer:pan.horizontal="onPanHorizontal"
+          v-hammer:panstart="onPanStart"
+          v-hammer:panend="onPanEnd"
+          v-hammer:panup="onPanUp"
+          v-hammer:pandown="onPanDown"
+        >
           <div class="bar" ref="bar" @click="setState('close')"></div>
+          <!-- <div class="bar" ref="bar"></div> -->
         </div>
         <div class="contents">
-          <popup-emoji
+          test contents
+          <!-- <popup-emoji
             v-if="bottomSheetType === 'emoji'"
             :tabs="tabs"
             :selected-tab="selectedTab"
@@ -76,10 +87,10 @@
           </popup-emoji>
           <popup-calendar
             v-if="bottomSheetType === 'calendar'"
-          ></popup-calendar>
+          ></popup-calendar> -->
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -217,7 +228,17 @@ export default {
           ],
           cont: ""
         },
-      ]
+      ],
+
+      isActive: false,
+      bottomSheetType: "",
+      openY: 0.6,
+      state: "close",
+      mc: null,
+      y: 0,
+      startY: 0,
+      isMove: false,
+      rect: {},
 
     }
 
@@ -226,8 +247,70 @@ export default {
   methods: {
     today() {
       $("html, body").animate({ scrollTop: 0 }, 500);
-    }
+    },
 
+    onPanStart(evt) {
+      console.log("onPanStart");
+      this.startY = evt.center.y;
+      this.isMove = true;
+    },
+
+    onPanEnd(evt) {
+      console.log("onPanEnd");
+      this.isMove = false;
+
+      switch (this.state) {
+        case "close":
+          break;
+        case "open":
+          console.log("open", this.startY, evt.center.y);
+          console.log("onPanEnd", this.startY - evt.center.y);
+          if (this.startY - evt.center.y < -120) {
+            this.state = "close";
+          }
+          break;
+      }
+    },
+
+    onPanUp(evt) {
+      console.log("onPanUp");
+       this.y = evt.center.y - 16;
+    },
+
+    onPanDown(evt) {
+      console.log("onPanDown");
+       this.y = evt.center.y - 16;
+    },
+
+    onPanHorizontal() {
+      console.log("onPanHorizontal");
+    },
+
+    calcY() {
+      switch (this.state) {
+        case "close":
+          return this.rect.height;
+        case "open":
+          return this.rect.height * this.openY;
+        default:
+          return this.y;
+      }
+    },
+
+    setState(state) {
+      this.state = state;
+    },
+
+    openEmoji() {
+      this.setState("open");
+      this.openY = 0.55;
+    }
+  },
+
+  mounted() {
+    window.onresize = () => {
+      this.rect = this.$refs.card.getBoundingClientRect();
+    };
   },
 
   filters: {
