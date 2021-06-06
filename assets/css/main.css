@@ -323,9 +323,11 @@ textarea:focus {
   height: 36px;
   border-radius: 12px;
   margin: 0 4px;
+  opacity: 0.3;
 }
 .bottom-sheet-emoji .tab-option.active {
   background-color: #f2f1f5;
+  opacity: 1;
 }
 .bottom-sheet-emoji .tab-content {
   margin: 0 16px;
