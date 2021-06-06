@@ -5,14 +5,25 @@
         <div :class="`card-side card-side-front${diary.active ? ' active' : ''}`">
           <div class="emoji-container">
             <ul class="emoji-group">
-              <li
-                class="emoji-item default"
-                v-for="(emoticon, emoticonIdx) in diary.emoticonList"
-                :key="emoticonIdx"
-                @click="openEmoji()"
-              >
-                <img :src="`/images/emoticon/${emoticon.path != '' ? emoticon.path + '/' + emoticon.fileNm : 'default/no_image.png'}`" />
-              </li>
+              <template v-if="diary.date == $moment().format('YYYYMMDD')">
+                <li
+                  :class="`emoji-item default${emoticon.selected ? ' selected' : ''}`"
+                  v-for="(emoticon, emoticonIdx) in diary.emoticonList"
+                  :key="emoticonIdx"
+                  @click="openEmoji(emoticonIdx, emoticon)"
+                >
+                  <img :src="`/images/emoticon/${emoticon.path != '' ? emoticon.path + '/' + emoticon.fileNm : 'default/no_image.png'}`" />
+                </li>
+              </template>
+              <template v-else>
+                <li
+                  class="emoji-item"
+                  v-for="(emoticon, emoticonIdx) in diary.emoticonList"
+                  :key="emoticonIdx"
+                >
+                  <img v-if="emoticon.path != ''" :src="`/images/emoticon/${emoticon.path + '/' + emoticon.fileNm}`" />
+                </li>
+              </template>
             </ul>
           </div>
           <div class="card-info-bottom">
@@ -74,16 +85,15 @@
           v-hammer:pandown="onPanDown"
         >
           <div class="bar" ref="bar" @click="setState('close')"></div>
-          <!-- <div class="bar" ref="bar"></div> -->
         </div>
         <div class="contents">
-          test contents
-          <!-- <popup-emoji
-            v-if="bottomSheetType === 'emoji'"
-            :tabs="tabs"
-            :selected-tab="selectedTab"
-            @changeTab="onClickTab"
+          <popup-emoji
+            :emoji="selectedEmoji"
+            v-if="bottomSheetType == 'emoji'"
+            @selectEmoji="selectEmoji"
           >
+          </popup-emoji>
+          <!-- 
           </popup-emoji>
           <popup-calendar
             v-if="bottomSheetType === 'calendar'"
@@ -95,25 +105,83 @@
 </template>
 
 <script>
+import PopupEmoji from "~/components/PopupEmoji";
+
 export default {
+  components: {
+    PopupEmoji
+  },
+
   data() {
     return {
       diaryList: [
         { 
           active: false,
-          date: "20200508",
+          date: this.$moment().format("YYYYMMDD"),
+          emoticonList: [
+            {
+              selected: false,
+              path: "default",
+              fileNm: "emoticon_01.png"
+            },
+            {
+              selected: false,
+              path: '',
+              fileNm: ''
+            },
+            {
+              selected: false,
+              path: "default",
+              fileNm: "emoticon_03.png"
+            },
+            {
+              selected: false,
+              path: '',
+              fileNm: ''
+            },
+            {
+              selected: false,
+              path: '',
+              fileNm: ''
+            },
+            {
+              selected: false,
+              path: '',
+              fileNm: ''
+            },
+            {
+              selected: false,
+              path: '',
+              fileNm: ''
+            },
+            {
+              selected: false,
+              path: '',
+              fileNm: ''
+            },
+            {
+              selected: false,
+              path: '',
+              fileNm: ''
+            },
+          ],
+          cont: ""
+        },
+        {
+          active: false,
+          date: this.$moment().day(-1).format("YYYYMMDD"),
           emoticonList: [
             {
               path: "default",
               fileNm: "emoticon_01.png"
             },
             {
-              path: '',
-              fileNm: ''
-            },
-            {
               path: "default",
               fileNm: "emoticon_03.png"
+            },
+            {
+              path: '',
+              fileNm: ''
             },
             {
               path: '',
@@ -144,62 +212,19 @@ export default {
         },
         {
           active: false,
-          date: "20200507",
+          date: this.$moment().day(-2).format("YYYYMMDD"),
           emoticonList: [
             {
               path: "default",
               fileNm: "emoticon_01.png"
             },
             {
-              path: "default",
-              fileNm: "emoticon_03.png"
-            },
-            {
               path: '',
               fileNm: ''
-            },
-            {
-              path: '',
-              fileNm: ''
-            },
-            {
-              path: '',
-              fileNm: ''
-            },
-            {
-              path: '',
-              fileNm: ''
-            },
-            {
-              path: '',
-              fileNm: ''
-            },
-            {
-              path: '',
-              fileNm: ''
-            },
-            {
-              path: '',
-              fileNm: ''
-            },
-          ],
-          cont: ""
-        },
-        {
-          active: false,
-          date: "20200506",
-          emoticonList: [
-            {
-              path: "default",
-              fileNm: "emoticon_01.png"
             },
             {
               path: "default",
               fileNm: "emoticon_03.png"
-            },
-            {
-              path: '',
-              fileNm: ''
             },
             {
               path: '',
@@ -240,6 +265,12 @@ export default {
       isMove: false,
       rect: {},
 
+      selectedEmoji: {
+        idx: 0,
+        category: "",
+        path: "",
+        fileNm: ""
+      }
     }
 
   },
@@ -250,40 +281,40 @@ export default {
     },
 
     onPanStart(evt) {
-      console.log("onPanStart");
       this.startY = evt.center.y;
       this.isMove = true;
     },
 
     onPanEnd(evt) {
-      console.log("onPanEnd");
       this.isMove = false;
 
       switch (this.state) {
         case "close":
           break;
         case "open":
-          console.log("open", this.startY, evt.center.y);
-          console.log("onPanEnd", this.startY - evt.center.y);
           if (this.startY - evt.center.y < -120) {
             this.state = "close";
           }
           break;
       }
+
+      // emoji bottomsheet 닫았을 경우
+      if (this.state == "close" && this.bottomSheetType == 'emoji') {
+        this.diaryList[0].emoticonList.forEach(v => {
+            v.selected = false;
+        });
+      }
     },
 
     onPanUp(evt) {
-      console.log("onPanUp");
        this.y = evt.center.y - 16;
     },
 
     onPanDown(evt) {
-      console.log("onPanDown");
        this.y = evt.center.y - 16;
     },
 
     onPanHorizontal() {
-      console.log("onPanHorizontal");
     },
 
     calcY() {
@@ -301,16 +332,41 @@ export default {
       this.state = state;
     },
 
-    openEmoji() {
+    openEmoji(idx, emoticon) {
+      this.diaryList[0].emoticonList.forEach((v, index) => {
+        if (idx == index) {
+          v.selected = true;
+        } else {
+          v.selected = false;
+        }
+      });
+
+      this.selectedEmoji = {
+        idx: idx,
+        path: emoticon.path,
+        fileNm: emoticon.fileNm
+      }
+
       this.setState("open");
       this.openY = 0.55;
+      this.bottomSheetType = "emoji";      
+    },
+
+    selectEmoji(idx, fileNm) {
+      this.diaryList[0].emoticonList.splice(idx, 1,  { path: "default", fileNm: fileNm });
+
+      this.diaryList[0].emoticonList.forEach((v, index) => {
+        if (idx == index) {
+          v.selected = true;
+        } else {
+          v.selected = false;
+        }
+      });
     }
   },
 
   mounted() {
-    window.onresize = () => {
-      this.rect = this.$refs.card.getBoundingClientRect();
-    };
+    this.rect = this.$refs.card.getBoundingClientRect();
   },
 
   filters: {
