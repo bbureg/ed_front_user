@@ -8,35 +8,14 @@
           :class="`tab-option${category.selected ? ' active' : ''}`"
           @click="selectCategory(idx, category)"        
         >
-          <img :src="`/images/emoticon/${category.type}/main/main.png`" />
+          <img :src="`${category.filePath}/${category.fileNm}`" />
         </li>
       </ul>
     </div>
     <div class="tab-content">
       <div class="grid-container">
-        <div class="grid-item">
-          <img src="/images/emoticon/default/emoticon_01.png" @click="selectEmoji('emoticon_01.png')" />
-        </div>
-        <div class="grid-item">
-          <img src="/images/emoticon/default/emoticon_02.png" @click="selectEmoji('emoticon_02.png')"/>
-        </div>
-        <div class="grid-item">
-          <img src="/images/emoticon/default/emoticon_03.png" @click="selectEmoji('emoticon_03.png')"/>
-        </div>
-        <div class="grid-item">
-          <img src="/images/emoticon/default/emoticon_04.png" @click="selectEmoji('emoticon_04.png')"/>
-        </div>
-        <div class="grid-item">
-          <img src="/images/emoticon/default/emoticon_05.png" @click="selectEmoji('emoticon_05.png')"/>
-        </div>
-        <div class="grid-item">
-          <img src="/images/emoticon/default/emoticon_06.png" @click="selectEmoji('emoticon_06.png')"/>
-        </div>
-        <div class="grid-item">
-          <img src="/images/emoticon/default/emoticon_07.png" @click="selectEmoji('emoticon_07.png')"/>
-        </div>
-        <div class="grid-item">
-          <img src="/images/emoticon/default/emoticon_08.png" @click="selectEmoji('emoticon_08.png')"/>
+        <div v-for="(emoticon, idx) in emoticonList" :key="idx" class="grid-item">
+          <img :src="`${emoticon.filePath}/${emoticon.fileNm}`" @click="selectEmoji(`emoticon_01.png`)" />
         </div>
       </div>
     </div>
@@ -60,24 +39,20 @@ export default {
 
   data() {
     return {
-      categoryList: [
-        { selected: true, type: "activity" },
-        { selected: false, type: "body" },
-        { selected: false, type: "clothes" },
-        { selected: false, type: "face" },
-        { selected: false, type: "food" },
-        { selected: false, type: "objects" },
-        { selected: false, type: "weather" },
-      ],
-
-      emoticonList: [
-
-      ]
+      categoryList: [],
+      emoticonList: []
     }
   },
 
   methods: {
-    selectCategory(idx, category) {
+    async selectCategory(idx, category) {
+      await this.$axios.$post("/emoticon/getListByCatgCd", {
+        catgCd: category.cd
+      })
+      .then((data) => {
+        this.emoticonList = data;
+      })
+
       this.categoryList.forEach((v, index) => {
         if (idx == index) {
           v.selected = true;
@@ -90,6 +65,31 @@ export default {
     selectEmoji(fileNm) {
       this.$emit("selectEmoji", this.emoji.idx, fileNm);
     }
+  },
+
+  async mounted() {
+    await this.$axios.$get("/emoticon_category/getList")
+      .then((res) => {
+        this.categoryList = res.map((v, idx) => {
+          return {
+            ...v,
+            selected: false
+          }
+        });
+
+        console.log("sdfsdf", this.emoji.idx);
+
+        if (this.emoji.filePath == "") {
+          console.log("sfsdfsdf");
+          this.categoryList[0].selected = true;
+        }
+
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
   }
 }
 </script>

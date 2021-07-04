@@ -44,7 +44,12 @@ const config = {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: "http://localhost:8080/api",
+    proxyHeaders: false,
+   // credentials: true,
+   // withCredentials: true,
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
