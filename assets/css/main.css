@@ -19,6 +19,27 @@ img {
   width: 100%;
   vertical-align: bottom;
 }
+.emoji-save-section{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index: 1;
+  background-color: #f2f2f2;
+  height: 48px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-family: "Noto Sans KR", SF UI Display, sans-serif;
+}
+.emoji-save-section .emoji-cancel{
+color: #F00062;
+}
+.emoji-save-section .emoji-save{
+  color: #4146E6;
+}
 
 .list-container {
   padding-top: 20px;
@@ -130,7 +151,7 @@ img {
 }
 
 .emoji-item.selected {
-  border: 2px solid #5b60e9;
+  border: 2px solid #4146E6;
   border-radius: 8px;
 }
 .emoji-item.default::before {
@@ -403,11 +424,11 @@ textarea:focus {
   border-radius: 16px;
   background: rgba(91, 96, 233, 0.2);
   font-weight: 800;
-  color: #5b60e9;
+  color: #4146E6;
 }
 .single-date-picker__selected {
   border-radius: 16px;
-  background-color: #5b60e9;
+  background-color: #4146E6;
   font-weight: 800;
   color: white;
 }
@@ -451,7 +472,7 @@ textarea:focus {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #5b60e9;
+  background-color: #4146E6;
   margin: 0 auto;
   position: absolute;
   bottom: 10px;
@@ -501,7 +522,7 @@ input {
   font-size: 14px;
   color: #222222;
   line-height: 20px;
-  caret-color: #5b60e9;
+  caret-color: #4146E6;
 }
 
 input::placeholder {
@@ -727,5 +748,5 @@ select::-ms-expand {
   font-size: 14px;
   color: #222222;
   line-height: 20px;
-  caret-color: #5b60e9;
+  caret-color: #4146E6;
 }

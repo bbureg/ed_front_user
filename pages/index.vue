@@ -1,18 +1,32 @@
 <template>
   <div id="app">
+    <div class="emoji-save-section" v-if="state === 'open'">
+      <!-- <div class="emoji-cancel" @click="setState('close')">취소</div> -->
+      <div class="emoji-save" @click="setState('close')">저장하기</div>
+    </div>
     <div class="list-container">
       <div class="card" v-for="(diary, diaryIdx) in diaryList" :key="diaryIdx">
-        <div :class="`card-side card-side-front${diary.active ? ' active' : ''}`">
+        <div
+          :class="`card-side card-side-front${diary.active ? ' active' : ''}`"
+        >
           <div class="emoji-container">
             <ul class="emoji-group">
               <template v-if="diary.date == $moment().format('YYYYMMDD')">
                 <li
-                  :class="`emoji-item default${emoticon.selected ? ' selected' : ''}`"
+                  :class="`emoji-item default${
+                    emoticon.selected ? ' selected' : ''
+                  }`"
                   v-for="(emoticon, emoticonIdx) in diary.emoticonList"
                   :key="emoticonIdx"
                   @click="openEmoji(emoticonIdx, emoticon)"
                 >
-                  <img :src="`/images/emoticon/${emoticon.path != '' ? emoticon.path + '/' + emoticon.fileNm : 'default/no_image.png'}`" />
+                  <img
+                    :src="`/images/emoticon/${
+                      emoticon.path != ''
+                        ? emoticon.path + '/' + emoticon.fileNm
+                        : 'default/no_image.png'
+                    }`"
+                  />
                 </li>
               </template>
               <template v-else>
@@ -21,14 +35,21 @@
                   v-for="(emoticon, emoticonIdx) in diary.emoticonList"
                   :key="emoticonIdx"
                 >
-                  <img v-if="emoticon.path != ''" :src="`/images/emoticon/${emoticon.path + '/' + emoticon.fileNm}`" />
+                  <img
+                    v-if="emoticon.path != ''"
+                    :src="`/images/emoticon/${
+                      emoticon.path + '/' + emoticon.fileNm
+                    }`"
+                  />
                 </li>
               </template>
             </ul>
           </div>
           <div class="card-info-bottom">
             <div class="info-date">
-              <div class="info-date-month">{{ $moment(diary.date).month() | getEnMonth }}</div>
+              <div class="info-date-month">
+                {{ $moment(diary.date).month() | getEnMonth }}
+              </div>
               <div class="info-date-day">{{ $moment(diary.date).date() }}</div>
             </div>
             <ul class="info-options">
@@ -41,13 +62,17 @@
             </ul>
           </div>
         </div>
-        <div :class="`card-side card-side-back${diary.active ? ' active' : ''}`">
+        <div
+          :class="`card-side card-side-back${diary.active ? ' active' : ''}`"
+        >
           <div class="card-close" @click="diary.active = false">
             <img src="~/assets/images/ico_close.png" />
           </div>
           <div class="text-section">
             <div class="info-date">
-              <div class="info-date-month">{{ $moment(diary.date).month() | getEnMonth }}</div>
+              <div class="info-date-month">
+                {{ $moment(diary.date).month() | getEnMonth }}
+              </div>
               <div class="info-date-day">{{ $moment(diary.date).date() }}</div>
             </div>
             <textarea
@@ -75,8 +100,8 @@
         :data-state="isMove ? 'move' : state"
         :style="{ top: `${isMove ? y : calcY()}px` }"
       >
-        <div 
-          class="pan-area" 
+        <div
+          class="pan-area"
           ref="pan"
           v-hammer:pan.horizontal="onPanHorizontal"
           v-hammer:panstart="onPanStart"
@@ -109,63 +134,63 @@ import PopupEmoji from "~/components/PopupEmoji";
 
 export default {
   components: {
-    PopupEmoji
+    PopupEmoji,
   },
 
   data() {
     return {
       diaryList: [
-        { 
+        {
           active: false,
           date: this.$moment().format("YYYYMMDD"),
           emoticonList: [
             {
               selected: false,
               path: "default",
-              fileNm: "emoticon_01.png"
+              fileNm: "emoticon_01.png",
             },
             {
               selected: false,
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
               selected: false,
               path: "default",
-              fileNm: "emoticon_03.png"
+              fileNm: "emoticon_03.png",
             },
             {
               selected: false,
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
               selected: false,
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
               selected: false,
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
               selected: false,
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
               selected: false,
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
               selected: false,
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
           ],
-          cont: ""
+          cont: "",
         },
         {
           active: false,
@@ -173,42 +198,42 @@ export default {
           emoticonList: [
             {
               path: "default",
-              fileNm: "emoticon_01.png"
+              fileNm: "emoticon_01.png",
             },
             {
               path: "default",
-              fileNm: "emoticon_03.png"
+              fileNm: "emoticon_03.png",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
           ],
-          cont: ""
+          cont: "",
         },
         {
           active: false,
@@ -216,42 +241,42 @@ export default {
           emoticonList: [
             {
               path: "default",
-              fileNm: "emoticon_01.png"
+              fileNm: "emoticon_01.png",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
               path: "default",
-              fileNm: "emoticon_03.png"
+              fileNm: "emoticon_03.png",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
             {
-              path: '',
-              fileNm: ''
+              path: "",
+              fileNm: "",
             },
           ],
-          cont: ""
+          cont: "",
         },
       ],
 
@@ -269,10 +294,9 @@ export default {
         idx: 0,
         category: "",
         path: "",
-        fileNm: ""
-      }
-    }
-
+        fileNm: "",
+      },
+    };
   },
 
   methods: {
@@ -299,23 +323,22 @@ export default {
       }
 
       // emoji bottomsheet 닫았을 경우
-      if (this.state == "close" && this.bottomSheetType == 'emoji') {
-        this.diaryList[0].emoticonList.forEach(v => {
-            v.selected = false;
+      if (this.state == "close" && this.bottomSheetType == "emoji") {
+        this.diaryList[0].emoticonList.forEach((v) => {
+          v.selected = false;
         });
       }
     },
 
     onPanUp(evt) {
-       this.y = evt.center.y - 16;
+      this.y = evt.center.y - 16;
     },
 
     onPanDown(evt) {
-       this.y = evt.center.y - 16;
+      this.y = evt.center.y - 16;
     },
 
-    onPanHorizontal() {
-    },
+    onPanHorizontal() {},
 
     calcY() {
       switch (this.state) {
@@ -330,6 +353,11 @@ export default {
 
     setState(state) {
       this.state = state;
+      if (this.state == "close" && this.bottomSheetType == "emoji") {
+        this.diaryList[0].emoticonList.forEach((v) => {
+          v.selected = false;
+        });
+      }
     },
 
     openEmoji(idx, emoticon) {
@@ -344,16 +372,19 @@ export default {
       this.selectedEmoji = {
         idx: idx,
         path: emoticon.path,
-        fileNm: emoticon.fileNm
-      }
+        fileNm: emoticon.fileNm,
+      };
 
       this.setState("open");
       this.openY = 0.55;
-      this.bottomSheetType = "emoji";      
+      this.bottomSheetType = "emoji";
     },
 
     selectEmoji(idx, fileNm) {
-      this.diaryList[0].emoticonList.splice(idx, 1,  { path: "default", fileNm: fileNm });
+      this.diaryList[0].emoticonList.splice(idx, 1, {
+        path: "default",
+        fileNm: fileNm,
+      });
 
       this.diaryList[0].emoticonList.forEach((v, index) => {
         if (idx == index) {
@@ -362,7 +393,7 @@ export default {
           v.selected = false;
         }
       });
-    }
+    },
   },
 
   mounted() {
@@ -372,22 +403,22 @@ export default {
   filters: {
     getEnMonth(idx) {
       let enStr = "";
-      if (idx == 0) enStr = "January"
-      else if (idx == 1) enStr = "February"
-      else if (idx == 2) enStr = "March"
-      else if (idx == 3) enStr = "April"
-      else if (idx == 4) enStr = "May"
-      else if (idx == 5) enStr = "June"
-      else if (idx == 6) enStr = "July"
-      else if (idx == 7) enStr = "August"
-      else if (idx == 8) enStr = "September"
-      else if (idx == 9) enStr = "October"
-      else if (idx == 10) enStr = "November"
-      else if (idx == 11) enStr = "December"
+      if (idx == 0) enStr = "January";
+      else if (idx == 1) enStr = "February";
+      else if (idx == 2) enStr = "March";
+      else if (idx == 3) enStr = "April";
+      else if (idx == 4) enStr = "May";
+      else if (idx == 5) enStr = "June";
+      else if (idx == 6) enStr = "July";
+      else if (idx == 7) enStr = "August";
+      else if (idx == 8) enStr = "September";
+      else if (idx == 9) enStr = "October";
+      else if (idx == 10) enStr = "November";
+      else if (idx == 11) enStr = "December";
 
       return enStr;
-    }
-  }  
+    },
+  },
 };
 </script>
 
